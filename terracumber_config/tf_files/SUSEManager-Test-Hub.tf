@@ -145,7 +145,7 @@ module "prh2" {
   additional_repos = {
     Test_repo = "http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/TEST:/Orion/SLE_15_SP4/"
   }
-  auto_accept                    = false
+  auto_accept                    = true
   use_os_released_updates        = false
   from_email                     = "root@suse.de"
   register_to_server = module.hub.configuration.hostname
