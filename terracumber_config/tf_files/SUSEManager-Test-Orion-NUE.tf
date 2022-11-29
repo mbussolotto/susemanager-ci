@@ -1,13 +1,13 @@
 // Mandatory variables for terracumber
 variable "URL_PREFIX" {
   type = string
-  default = "https://ci.suse.de/view/Manager/view/Manager-Test/job/manager-TEST-Orion-acceptance-tests"
+  default = "https://ci.suse.de/view/Manager/view/Manager-Test/job/manager-TEST-acceptance-tests"
 }
 
 // Not really used as this is for --runall parameter, and we run cucumber step by step
 variable "CUCUMBER_COMMAND" {
   type = string
-  default = "export PRODUCT='Uyuni' && run-testsuite"
+  default = "export PRODUCT='SUSE-Manager' && run-testsuite"
 }
 
 variable "CUCUMBER_GITREPO" {
@@ -103,8 +103,7 @@ module "cucumber_testsuite" {
   cc_username = var.SCC_USER
   cc_password = var.SCC_PASSWORD
 
-  //images = ["opensuse154o", "sles15sp2o", "sles15sp3o", "sles15sp4o", "ubuntu2204o"]
-  images = ["centos7o", "opensuse154o", "sles15sp2o", "sles15sp3o", "sles15sp4o", "ubuntu2204o"]
+  images = ["rocky8o", "opensuse154o", "sles15sp2o", "sles15sp3o", "sles15sp4o", "ubuntu2204o"]
 
   use_avahi    = false
   name_prefix  = "suma-testorion-"
@@ -141,10 +140,6 @@ module "cucumber_testsuite" {
       provider_settings = {
         mac = "aa:b2:93:01:00:72"
       }
-      additional_repos = {
-        Test_repo = "http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/TEST:/Orion/SLE_15_SP4/"
-        Salt_repo = "https://download.opensuse.org/repositories/systemsmanagement:/saltstack:/bundle:/testing:/SLE15/SLE_15/"
-      }
       additional_packages = [ "venv-salt-minion" ]
       install_salt_bundle = true
     }
@@ -153,9 +148,6 @@ module "cucumber_testsuite" {
       name = "cli-sles15"
       provider_settings = {
         mac = "aa:b2:93:01:00:74"
-      }
-      additional_repos = {
-        Salt_repo = "https://download.opensuse.org/repositories/systemsmanagement:/saltstack:/bundle:/testing:/SLE15/SLE_15/"
       }
       additional_packages = [ "venv-salt-minion" ]
       install_salt_bundle = true
@@ -166,9 +158,6 @@ module "cucumber_testsuite" {
       provider_settings = {
         mac = "aa:b2:93:01:00:76"
       }
-      additional_repos = {
-        Salt_repo = "https://download.opensuse.org/repositories/systemsmanagement:/saltstack:/bundle:/testing:/SLE15/SLE_15/"
-      }
       additional_packages = [ "venv-salt-minion" ]
       install_salt_bundle = true
     }
@@ -178,14 +167,11 @@ module "cucumber_testsuite" {
       provider_settings = {
         mac = "aa:b2:93:01:00:78"
       }
-      additional_repos = {
-        Salt_repo = "https://download.opensuse.org/repositories/systemsmanagement:/saltstack:/bundle:/testing:/SLE15/SLE_15/"
-      }
       additional_packages = [ "venv-salt-minion", "iptables" ]
       install_salt_bundle = true
     }
     redhat-minion = {
-      image = "centos7o"
+      image = "rocky8o"
       provider_settings = {
         mac = "aa:b2:93:01:00:79"
         // Since start of May we have problems with the instance not booting after a restart if there is only a CPU and only 1024Mb for RAM
@@ -193,14 +179,8 @@ module "cucumber_testsuite" {
         memory = 2048
         vcpu = 2
       }
-      additional_repos = {
-        Salt_repo = "https://download.opensuse.org/repositories/systemsmanagement:/saltstack:/bundle:/testing:/CentOS7/CentOS_7/"
-      }
       additional_packages = [ "venv-salt-minion" ]
       install_salt_bundle = true
-    }
-    pxeboot-minion = {
-      image = "sles15sp3o"
     }
     debian-minion = {
       name = "min-ubuntu2204"
@@ -208,20 +188,30 @@ module "cucumber_testsuite" {
       provider_settings = {
         mac = "aa:b2:93:01:00:7b"
       }
-      additional_repos = {
-        Salt_repo = "https://download.opensuse.org/repositories/systemsmanagement:/saltstack:/bundle:/testing:/Ubuntu2204/Ubuntu_22.04/"
-      }
       additional_packages = [ "venv-salt-minion" ]
       install_salt_bundle = true
     }
     build-host = {
-      image = "sles15sp2o"
+      image = "sles15sp4o"
+      name = "min-build"
       provider_settings = {
         mac = "aa:b2:93:01:00:7d"
         memory = 2048
+        vcpu = 2
       }
-      additional_repos = {
-        Salt_repo = "https://download.opensuse.org/repositories/systemsmanagement:/saltstack:/bundle:/testing:/SLE15/SLE_15/"
+      additional_packages = [ "venv-salt-minion" ]
+      install_salt_bundle = true
+    }
+    pxeboot-minion = {
+      image = "sles15sp4o"
+      additional_packages = [ "venv-salt-minion" ]
+      install_salt_bundle = true
+    }
+    kvm-host = {
+      image = "sles15sp4o"
+      name = "min-kvm"
+      provider_settings = {
+        mac = "aa:b2:93:01:00:4e"
       }
       additional_packages = [ "venv-salt-minion" ]
       install_salt_bundle = true
