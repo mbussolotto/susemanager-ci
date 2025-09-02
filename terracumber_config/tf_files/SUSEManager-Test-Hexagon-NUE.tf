@@ -179,7 +179,7 @@ module "cucumber_testsuite" {
     suse_sshminion = {
       image = "sles15sp4o"
       provider_settings = {
-        mac = "aa:b2:93:01:00:d8"
+        mac = "aa:b2:93:01:00:58"
         vcpu = 2
         memory = 2048
       }
