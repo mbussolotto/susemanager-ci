@@ -120,8 +120,8 @@ module "cucumber_testsuite" {
   container_proxy  = true
   beta_enabled = false
 
-  //mirror                   = "minima-mirror-ci-bv.mgr.suse.de"
-  //use_mirror_images        = true
+  mirror                   = "minima-mirror-ci-bv.mgr.suse.de"
+  use_mirror_images        = true
 
   server_http_proxy        = "http-proxy.mgr.suse.de:3128"
   custom_download_endpoint = "ftp://minima-mirror-ci-bv.mgr.suse.de:445"
@@ -135,7 +135,6 @@ module "cucumber_testsuite" {
       }
     }
     server_containerized = {
-      image = "slmicro61o"
       provider_settings = {
         mac = "aa:b2:93:01:00:51"
         vcpu = 8
@@ -213,6 +212,15 @@ module "cucumber_testsuite" {
     }
     pxeboot_minion = {
       image = "sles15sp4o"
+    }
+    dhcp_dns = {
+      name        = "dhcp-dns"
+      image       = "opensuse155o"
+      hypervisor  = {
+        host        = "suma-03.mgr.suse.de"
+        user        = "root"
+        private_key = file("~/.ssh/id_ed25519")
+      }
     }
   }
 
