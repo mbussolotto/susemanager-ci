@@ -100,7 +100,7 @@ terraform {
     }
     feilong = {
       source = "bischoff/feilong"
-      version = "0.0.6"
+      version = "0.0.9"
     }
   }
 }
@@ -750,9 +750,11 @@ module "sles15sp5s390_minion" {
 
   name               = "sles15sp5s390-minion"
   image              = "s15s5-minimal-2part-xfs"
+  roles              = ["minion"]
 
   provider_settings = {
     userid             = "UYMMISLC"
+    os_version         = "sles15.5"
     mac                = "02:00:00:02:01:34"
     ssh_user           = "sles"
     vswitch            = "VSUMA"
@@ -1254,9 +1256,11 @@ module "sles15sp5s390_sshminion" {
 
   name               = "sles15sp5s390-sshminion"
   image              = "s15s5-minimal-2part-xfs"
+  roles              = ["sshminion"]
 
   provider_settings = {
     userid             = "UYMSSSLC"
+    os_version         = "sles15.5"
     mac                = "02:00:00:02:01:35"
     ssh_user           = "sles"
     vswitch            = "VSUMA"
@@ -1474,6 +1478,7 @@ module "controller" {
   git_password = var.GIT_PASSWORD
   git_repo     = var.CUCUMBER_GITREPO
   branch       = var.CUCUMBER_BRANCH
+  git_profiles_repo = "https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/temporary"
 
   server_configuration = module.server_containerized.configuration
   proxy_configuration  = module.proxy_containerized.configuration

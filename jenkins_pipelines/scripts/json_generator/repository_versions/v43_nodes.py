@@ -50,12 +50,15 @@ v43_client_tools: dict[str, Set[str]] = {
     "sle15sp6_client": {"/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
                         "/SUSE_Updates_SLE-Module-Basesystem_15-SP6_x86_64/",
                         "/SUSE_Updates_SLE-Module-Server-Applications_15-SP6_x86_64/",
+                        "/SUSE_Updates_SLE-Product-SLES_15-SP6-LTSS_x86_64/",
                         "/SUSE_Updates_SLE-Module-Python3_15-SP6_x86_64/"},
     "sle15sp6_minion": {"/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
                         "/SUSE_Updates_SLE-Module-Basesystem_15-SP6_x86_64/",
                         "/SUSE_Updates_SLE-Module-Server-Applications_15-SP6_x86_64/",
                         "/SUSE_Updates_SLE-Module-Systems-Management_15-SP6_x86_64/",
-                        "/SUSE_Updates_SLE-Module-Python3_15-SP6_x86_64/"},
+                        "/SUSE_Updates_SLE-Module-Python3_15-SP6_x86_64/",
+                        "/SUSE_Updates_SLE-Product-SLES_15-SP6-LTSS_x86_64/",
+                        "/SUSE_Updates_SLE-Module-Development-Tools_15-SP6_x86_64/"},
     "sle15sp7_client": {"/SUSE_Updates_SLE-Manager-Tools_15_x86_64/",
                         "/SUSE_Updates_SLE-Module-Basesystem_15-SP7_x86_64/",
                         "/SUSE_Updates_SLE-Module-Server-Applications_15-SP7_x86_64/",
@@ -64,7 +67,8 @@ v43_client_tools: dict[str, Set[str]] = {
                         "/SUSE_Updates_SLE-Module-Basesystem_15-SP7_x86_64/",
                         "/SUSE_Updates_SLE-Module-Server-Applications_15-SP7_x86_64/",
                         "/SUSE_Updates_SLE-Module-Systems-Management_15-SP7_x86_64/",
-                        "/SUSE_Updates_SLE-Module-Python3_15-SP7_x86_64/"},
+                        "/SUSE_Updates_SLE-Module-Python3_15-SP7_x86_64/",
+                        "/SUSE_Updates_SLE-Module-Development-Tools_15-SP6_x86_64/"},
     "sle15sp5s390_minion": {"/SUSE_Updates_SLE-Manager-Tools_15_s390x/",
                             "/SUSE_Updates_SLE-Module-Basesystem_15-SP5_s390x/",
                             "/SUSE_Updates_SLE-Module-Server-Applications_15-SP5_s390x/",
@@ -118,12 +122,14 @@ v43_nodes: Dict[str, Set[str]] = {
                "/SUSE_Updates_SLE-Product-SUSE-Manager-Server_4.3-LTS_x86_64/",
                "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
                "/SUSE_Updates_SLE-Module-Web-Scripting_15-SP4_x86_64/",
-               "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"},
+               "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/",
+               "SUSE_Updates_SLE-Product-SLES_15-SP4-LTSS_x86_64"},
     "proxy": {"/SUSE_Updates_SLE-Module-SUSE-Manager-Proxy_4.3_x86_64/",
               "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.3_x86_64/",
               "/SUSE_Updates_SLE-Product-SUSE-Manager-Proxy_4.3-LTS_x86_64/",
               "/SUSE_Updates_SLE-Module-Basesystem_15-SP4_x86_64/",
-              "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/"}
+              "/SUSE_Updates_SLE-Module-Server-Applications_15-SP4_x86_64/",
+              "SUSE_Updates_SLE-Product-SLES_15-SP4-LTSS_x86_64"}
 }
 
 def get_v43_nodes_sorted() -> Dict[str, List[str]]:

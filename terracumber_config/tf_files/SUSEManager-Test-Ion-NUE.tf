@@ -116,7 +116,7 @@ module "cucumber_testsuite" {
   cc_ptf_username = var.SCC_PTF_USER
   cc_ptf_password = var.SCC_PTF_PASSWORD
 
-  images = ["rocky8o", "opensuse155o", "opensuse156o", "ubuntu2404o", "sles15sp4o", "slemicro55o"]
+  images = ["rocky8o", "opensuse155o", "opensuse156o", "ubuntu2404o", "sles15sp7o", "slemicro55o"]
 
   use_avahi    = false
   name_prefix  = "suma-test-ion-"
@@ -127,7 +127,7 @@ module "cucumber_testsuite" {
   auth_registry          = "registry.mgr.suse.de:5000/cucutest"
   auth_registry_username = "cucutest"
   auth_registry_password = "cucusecret"
-  git_profiles_repo      = "https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/internal_nue"
+  git_profiles_repo      = "https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/temporary"
 
   # server_http_proxy = "http-proxy.mgr.suse.de:3128"
   custom_download_endpoint = "ftp://minima-mirror-ci-bv.mgr.suse.de:445"
@@ -169,7 +169,7 @@ module "cucumber_testsuite" {
       }
     }
     suse_minion = {
-      image = "sles15sp4o"
+      image = "sles15sp7o"
       provider_settings = {
         mac = "aa:b2:93:01:00:46"
         vcpu = 2
@@ -177,7 +177,7 @@ module "cucumber_testsuite" {
       }
     }
     suse_sshminion = {
-      image = "sles15sp4o"
+      image = "sles15sp7o"
       provider_settings = {
         mac = "aa:b2:93:01:00:48"
         vcpu = 2
@@ -203,7 +203,7 @@ module "cucumber_testsuite" {
       }
     }
     build_host = {
-      image = "sles15sp4o"
+      image = "sles15sp7o"
       provider_settings = {
         mac = "aa:b2:93:01:00:4d"
         vcpu = 2
@@ -211,10 +211,10 @@ module "cucumber_testsuite" {
       }
     }
     pxeboot_minion = {
-      image = "sles15sp4o"
+      image = "sles15sp7o"
     }
     kvm_host = {
-      image = "sles15sp4o"
+      image = "sles15sp7o"
       provider_settings = {
         mac = "aa:b2:93:01:00:4e"
       }

@@ -117,7 +117,7 @@ module "cucumber_testsuite" {
   cc_username = var.SCC_USER
   cc_password = var.SCC_PASSWORD
 
-  images = ["rocky8o", "opensuse155o", "opensuse156o", "leapmicro55o", "ubuntu2404o", "sles15sp4o", "tumbleweedo"]
+  images = ["rocky8o", "opensuse155o", "opensuse156o", "leapmicro55o", "ubuntu2404o", "sles15sp7o", "tumbleweedo"]
 
   use_avahi    = false
   name_prefix  = "suma-codecov-"
@@ -134,7 +134,7 @@ module "cucumber_testsuite" {
   auth_registry      = "registry.mgr.slc1.suse.org:5000/cucutest"
   auth_registry_username = "cucutest"
   auth_registry_password = "cucusecret"
-  git_profiles_repo = "https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/internal_slc"
+  git_profiles_repo = "https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/temporary"
 
   # server_http_proxy = "http-proxy.mgr.slc1.suse.org:3128"
   custom_download_endpoint = "ftp://minima-mirror-ci-bv.mgr.slc1.suse.org:445"
@@ -202,14 +202,14 @@ module "cucumber_testsuite" {
     //   }
     // }
     build_host = {
-     image = "sles15sp4o"
+     image = "sles15sp7o"
      provider_settings = {
        mac = "aa:b2:92:04:00:f9"
        memory = 4096
      }
     }
     pxeboot_minion = {
-     image = "sles15sp4o"
+     image = "sles15sp7o"
     }
     dhcp_dns = {
       name = "dhcp-dns"

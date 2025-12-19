@@ -4,10 +4,16 @@ IBS_URL_PREFIX="http://download.suse.de/ibs/SUSE:"
 # Dictionary for SUMA 5.10 minion tools and repositories
 
 v51_uyuni_tools_sles_repos: Dict[str, Set[str]] = {
-    "server" : { "/SUSE_Updates_Multi-Linux-Manager-Server-SLE_5.1_x86_64/" },
+    "server" : {"/SUSE_Updates_Multi-Linux-Manager-Server-SLE_5.1_x86_64/",
+                "/SUSE_Updates_SLE-Module-Server-Applications_15-SP7_x86_64/",
+                "/SUSE_Updates_SLE-Module-Basesystem_15-SP7_x86_64/",
+                "/SUSE_SLE-15-SP7_Update/"},
     "proxy" : { "/SUSE_Updates_Multi-Linux-Manager-Proxy-SLE_5.1_x86_64/",
                 "/SUSE_Updates_Multi-Linux-Manager-Retail-Branch-Server-SLE_5.1_x86_64/",
-                "/SUSE_Updates_MultiLinuxManagerTools_SLE-15_x86_64/"}
+                "/SUSE_Updates_MultiLinuxManagerTools_SLE-15_x86_64/",
+                "/SUSE_Updates_SLE-Module-Server-Applications_15-SP7_x86_64/",
+                "/SUSE_Updates_SLE-Module-Basesystem_15-SP7_x86_64/",
+                "/SUSE_SLE-15-SP7_Update/"}
 }
 
 v51_uyuni_tools_micro_repos: Dict[str, Dict[str, str]] = {
@@ -53,8 +59,10 @@ v51_nodes_dynamic_client_tools_repos: Dict[str, Set[str]] = {
     "sle15sp4_minion": { "/SUSE_Updates_MultiLinuxManagerTools_SLE-15_x86_64/" },
     "sle15sp5_minion": { "/SUSE_Updates_MultiLinuxManagerTools_SLE-15_x86_64/", },
     "sle15sp5s390_minion": { "/SUSE_Updates_MultiLinuxManagerTools_SLE-15_s390x/" },
-    "sle15sp6_minion": { "/SUSE_Updates_MultiLinuxManagerTools_SLE-15_x86_64/" },
-    "sle15sp7_minion": { "/SUSE_Updates_MultiLinuxManagerTools_SLE-15_x86_64/" },
+    "sle15sp6_minion": { "/SUSE_Updates_MultiLinuxManagerTools_SLE-15_x86_64/",
+                         "/SUSE_Updates_SLE-Module-Development-Tools_15-SP6_x86_64/"},
+    "sle15sp7_minion": { "/SUSE_Updates_MultiLinuxManagerTools_SLE-15_x86_64/",
+                         "/SUSE_Updates_SLE-Module-Development-Tools_15-SP7_x86_64/"},
     "slemicro51_minion": { "/SUSE_Updates_MultiLinuxManagerTools_SLE-Micro-5_x86_64/" },
     "slemicro52_minion": { "/SUSE_Updates_MultiLinuxManagerTools_SLE-Micro-5_x86_64/" },
     "slemicro53_minion": { "/SUSE_Updates_MultiLinuxManagerTools_SLE-Micro-5_x86_64/" },

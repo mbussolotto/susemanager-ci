@@ -87,7 +87,7 @@ terraform {
     }
     feilong = {
       source = "bischoff/feilong"
-      version = "0.0.6"
+      version = "0.0.9"
     }
   }
 }
@@ -176,7 +176,7 @@ module "server" {
   }
 
   server_mounted_mirror          = "minima-mirror-ci-bv.mgr.suse.de"
-  main_disk_size                 = 20
+  main_disk_size                 = 30
   repository_disk_size           = 3072
   database_disk_size             = 150
   java_debugging                 = false
@@ -700,9 +700,11 @@ module "sles15sp5s390_minion" {
   base_configuration = module.base_s390.configuration
   name               = "sles15sp5s390-minion"
   image              = "s15s5-minimal-2part-xfs"
+  roles              = ["minion"]
 
   provider_settings = {
     userid             = "S43MINUE"
+    os_version         = "sles15.5"
     mac                = "02:00:00:42:00:26"
     ssh_user           = "sles"
     vswitch            = "VSUMA"
@@ -1154,9 +1156,11 @@ module "sles15sp5s390_sshminion" {
   base_configuration = module.base_s390.configuration
   name               = "sles15sp5s390-sshminion"
   image              = "s15s5-minimal-2part-xfs"
+  roles              = ["sshminion"]
 
   provider_settings = {
     userid             = "S43SSNUE"
+    os_version         = "sles15.5"
     mac                = "02:00:00:42:00:27"
     ssh_user           = "sles"
     vswitch            = "VSUMA"
@@ -1264,29 +1268,41 @@ module "sles15sp5s390_sshminion" {
 //   ssh_key_path            = "./salt/controller/id_ed25519.pub"
 // }
 
-module "sles15sp4_buildhost" {
+module "sles15sp6_buildhost" {
   source             = "./modules/build_host"
   base_configuration = module.base_core.configuration
-  name               = "sles15sp4-build"
-  image              = "sles15sp4o"
+  name               = "sles15sp6-build"
+  image              = "sles15sp6o"
   provider_settings = {
-    mac                = "aa:b2:92:42:00:a5"
+    mac                = "aa:b2:92:42:00:a6"
     memory             = 2048
     vcpu               = 2
   }
-  server_configuration = {
-    hostname = "suma-bv-43-proxy.mgr.suse.de"
-  }
-  auto_connect_to_master  = false
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
+
 }
 
-module "sles15sp4_terminal" {
+module "sles15sp7_buildhost" {
+  source             = "./modules/build_host"
+  base_configuration = module.base_core.configuration
+  name               = "sles15sp7-build"
+  image              = "sles15sp7o"
+  provider_settings = {
+    mac                = "aa:b2:92:42:00:a7"
+    memory             = 2048
+    vcpu               = 2
+  }
+  use_os_released_updates = false
+  ssh_key_path            = "./salt/controller/id_ed25519.pub"
+
+}
+
+module "sles15sp6_terminal" {
   source             = "./modules/pxe_boot"
   base_configuration = module.base_core.configuration
-  name               = "sles15sp4-terminal"
-  image              = "sles15sp4o"
+  name               = "sles15sp6-terminal"
+  image              = "sles15sp6o"
   provider_settings = {
     memory             = 2048
     vcpu               = 2
@@ -1294,7 +1310,22 @@ module "sles15sp4_terminal" {
     product            = "ProLiant DL360 Gen9"
   }
   private_ip         = 6
-  private_name       = "sle15sp4terminal"
+  private_name       = "sle15sp6terminal"
+}
+
+module "sles15sp7_terminal" {
+  source             = "./modules/pxe_boot"
+  base_configuration = module.base_core.configuration
+  name               = "sles15sp7-terminal"
+  image              = "sles15sp7o"
+  provider_settings = {
+    memory             = 2048
+    vcpu               = 2
+    manufacturer       = "HP"
+    product            = "ProLiant DL580 Gen9"
+  }
+  private_ip         = 7
+  private_name       = "sle15sp7terminal"
 }
 
 module "monitoring_server" {
@@ -1332,6 +1363,7 @@ module "controller" {
   git_password = var.GIT_PASSWORD
   git_repo     = var.CUCUMBER_GITREPO
   branch       = var.CUCUMBER_BRANCH
+  git_profiles_repo = "https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/temporary"
 
   server_configuration = module.server.configuration
   proxy_configuration  = module.proxy.configuration
@@ -1432,9 +1464,11 @@ module "controller" {
 //  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
 //  slmicro61_sshminion_configuration = module.slmicro61_sshminion.configuration
 
-  sle15sp4_buildhost_configuration = module.sles15sp4_buildhost.configuration
+  sle15sp6_buildhost_configuration = module.sles15sp6_buildhost.configuration
+  sle15sp7_buildhost_configuration = module.sles15sp7_buildhost.configuration
 
-  sle15sp4_terminal_configuration = module.sles15sp4_terminal.configuration
+  sle15sp6_terminal_configuration = module.sles15sp6_terminal.configuration
+  sle15sp7_terminal_configuration = module.sles15sp7_terminal.configuration
 
   monitoringserver_configuration = module.monitoring_server.configuration
 }

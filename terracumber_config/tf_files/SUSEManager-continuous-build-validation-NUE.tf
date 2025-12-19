@@ -122,7 +122,7 @@ terraform {
     }
     feilong = {
       source = "bischoff/feilong"
-      version = "0.0.6"
+      version = "0.0.9"
     }
   }
 }
@@ -152,7 +152,6 @@ module "base_core" {
   use_avahi         = false
   domain            = "mgr.suse.de"
   images            = [ "sles12sp5o", "sles15sp3o", "sles15sp4o", "sles15sp5o", "sles15sp6o", "sles15sp7o", "slemicro51-ign", "slemicro52-ign", "slemicro53-ign", "slemicro54-ign", "slemicro55o", "slmicro60o", "slmicro61o", "almalinux8o", "almalinux9o", "amazonlinux2023o", "centos7o", "libertylinux9o", "oraclelinux9o", "rocky8o", "rocky9o", "ubuntu2204o", "ubuntu2404o", "debian12o", "opensuse155o", "opensuse156o" ]
-                    // disabled: "openeuler2403o"
 
   mirror            = "minima-mirror-ci-bv.mgr.suse.de"
   use_mirror_images = true
@@ -421,20 +420,6 @@ module "liberty9_minion" {
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
 }
 
-// module "openeuler2403_minion" {
-//   source             = "./modules/minion"
-//   base_configuration = module.base_core.configuration
-//   name               = "openeuler2403-minion"
-//   image              = "openeuler2403o"
-//   provider_settings = {
-//     mac                = "aa:b2:93:01:02:a0"
-//     memory             = 4096
-//   }
-//   auto_connect_to_master  = false
-//   use_os_released_updates = false
-//   ssh_key_path            = "./salt/controller/id_ed25519.pub"
-// }
-
 module "oracle9_minion" {
   source             = "./modules/minion"
   base_configuration = module.base_core.configuration
@@ -546,9 +531,11 @@ module "sles15sp5s390_minion" {
 
   name               = "sles15sp5s390-minion"
   image              = "s15s5-minimal-2part-xfs"
+  roles              = ["minion"]
 
   provider_settings = {
     userid             = "W51MINUE"
+    os_version         = "sles15.5"
     mac                = "02:00:00:42:00:2e"
     ssh_user           = "sles"
     vswitch            = "VSUMA"
@@ -593,7 +580,7 @@ module "slemicro51_minion" {
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
 
-// WORKAROUND: Does not work in sumaform, yet
+  // WORKAROUND: Does not work in sumaform, yet
   install_salt_bundle = false
 }
 
@@ -611,7 +598,7 @@ module "slemicro52_minion" {
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
 
-// WORKAROUND: Does not work in sumaform, yet
+  // WORKAROUND: Does not work in sumaform, yet
   install_salt_bundle = false
 }
 
@@ -629,7 +616,7 @@ module "slemicro53_minion" {
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
 
-// WORKAROUND: Does not work in sumaform, yet
+  // WORKAROUND: Does not work in sumaform, yet
   install_salt_bundle = false
 }
 
@@ -647,7 +634,7 @@ module "slemicro54_minion" {
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
 
-// WORKAROUND: Does not work in sumaform, yet
+  // WORKAROUND: Does not work in sumaform, yet
   install_salt_bundle = false
 }
 
@@ -665,7 +652,7 @@ module "slemicro55_minion" {
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
 
-// WORKAROUND: Does not work in sumaform, yet
+  // WORKAROUND: Does not work in sumaform, yet
   install_salt_bundle = false
 }
 
@@ -682,9 +669,6 @@ module "slmicro60_minion" {
   auto_connect_to_master  = false
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
-
-// WORKAROUND: Does not work in sumaform, yet
-  install_salt_bundle = false
 }
 
 module "slmicro61_minion" {
@@ -701,8 +685,6 @@ module "slmicro61_minion" {
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
 
-// WORKAROUND: Does not work in sumaform, yet
-  install_salt_bundle = false
 }
 
 module "sles12sp5_sshminion" {
@@ -837,7 +819,6 @@ module "centos7_sshminion" {
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
 }
 
-
 module "liberty9_sshminion" {
   source             = "./modules/sshminion"
   base_configuration = module.base_core.configuration
@@ -850,19 +831,6 @@ module "liberty9_sshminion" {
   use_os_released_updates = false
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
 }
-
-// module "openeuler2403_sshminion" {
-//   source             = "./modules/sshminion"
-//   base_configuration = module.base_core.configuration
-//   name               = "openeuler2403-sshminion"
-//   image              = "openeuler2403o"
-//   provider_settings = {
-//     mac                = "aa:b2:93:01:02:c0"
-//     memory             = 4096
-//   }
-//   use_os_released_updates = false
-//   ssh_key_path            = "./salt/controller/id_ed25519.pub"
-// }
 
 module "oracle9_sshminion" {
   source             = "./modules/sshminion"
@@ -967,9 +935,11 @@ module "sles15sp5s390_sshminion" {
 
   name               = "sles15sp5s390-sshminion"
   image              = "s15s5-minimal-2part-xfs"
+  roles              = ["sshminion"]
 
   provider_settings = {
     userid             = "W51SSNUE"
+    os_version         = "sles15.5"
     mac                = "02:00:00:42:00:2f"
     ssh_user           = "sles"
     vswitch            = "VSUMA"
@@ -979,120 +949,13 @@ module "sles15sp5s390_sshminion" {
   ssh_key_path            = "./salt/controller/id_ed25519.pub"
 }
 
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-// module "slemicro51_sshminion" {
-//   source             = "./modules/sshminion"
-//   base_configuration = module.base_core.configuration
-//   name               = "slemicro51-sshminion"
-//   image              = "slemicro51-ign"
-//   provider_settings = {
-//     mac                = "aa:b2:92:42:00:c6"
-//     memory             = 2048
-//   }
-//   use_os_released_updates = false
-//   ssh_key_path            = "./salt/controller/id_ed25519.pub"
-// }
-
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-// module "slemicro52_sshminion" {
-//   source             = "./modules/sshminion"
-//   base_configuration = module.base_core.configuration
-//   name               = "slemicro52-sshminion"
-//   image              = "slemicro52-ign"
-//   provider_settings = {
-//     mac                = "aa:b2:92:42:00:c7"
-//     memory             = 2048
-//   }
-//   use_os_released_updates = false
-//   ssh_key_path            = "./salt/controller/id_ed25519.pub"
-// }
-
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-// module "slemicro53_sshminion" {
-//   source             = "./modules/sshminion"
-//   base_configuration = module.base_core.configuration
-//   name               = "slemicro53-sshminion"
-//   image              = "slemicro53-ign"
-//   provider_settings = {
-//     mac                = "aa:b2:92:42:00:c8"
-//     memory             = 2048
-//   }
-//   use_os_released_updates = false
-//   ssh_key_path            = "./salt/controller/id_ed25519.pub"
-// }
-
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-// module "slemicro54_sshminion" {
-//   source             = "./modules/sshminion"
-//   base_configuration = module.base_core.configuration
-//   name               = "slemicro54-sshminion"
-//   image              = "slemicro54-ign"
-//   provider_settings = {
-//     mac                = "aa:b2:92:42:00:c9"
-//     memory             = 2048
-//   }
-//   use_os_released_updates = false
-//   ssh_key_path            = "./salt/controller/id_ed25519.pub"
-//
-//
-//
-//}
-
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-// module "slemicro55_sshminion" {
-//   source             = "./modules/sshminion"
-//   base_configuration = module.base_core.configuration
-//   name               = "slemicro55-sshminion"
-//   image              = "slemicro55o"
-//   provider_settings = {
-//     mac                = "aa:b2:92:42:00:ca"
-//     memory             = 2048
-//   }
-//   use_os_released_updates = false
-//   ssh_key_path            = "./salt/controller/id_ed25519.pub"
-//
-//
-//}
-
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-// module "slmicro60_sshminion" {
-//   source             = "./modules/sshminion"
-//   base_configuration = module.base_core.configuration
-//   name               = "slmicro60-sshminion"
-//   image              = "slmicro60o"
-//   provider_settings = {
-//     mac                = "aa:b2:92:42:00:cb"
-//     memory             = 2048
-//   }
-//   use_os_released_updates = false
-//   ssh_key_path            = "./salt/controller/id_ed25519.pub"
-//
-//
-//}
-
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-// module "slmicro61_sshminion" {
-//   source             = "./modules/sshminion"
-//   base_configuration = module.base_core.configuration
-//   name               = "slmicro61-sshminion"
-//   image              = "slmicro61o"
-//   provider_settings = {
-//     mac                = "aa:b2:92:42:00:cc"
-//     memory             = 2048
-//   }
-//   use_os_released_updates = false
-//   ssh_key_path            = "./salt/controller/id_ed25519.pub"
-//
-//
-//}
-
-module "sles15sp4_buildhost" {
+module "sles15sp6_buildhost" {
   source             = "./modules/build_host"
   base_configuration = module.base_core.configuration
-  name               = "sles15sp4-build"
-  image              = "sles15sp4o"
+  name               = "sles15sp6-build"
+  image              = "sles15sp6o"
   provider_settings = {
-    mac                = "aa:b2:93:01:02:85"
+    mac                = "aa:b2:93:01:02:86"
     memory             = 2048
     vcpu               = 2
   }
@@ -1101,11 +964,26 @@ module "sles15sp4_buildhost" {
 
 }
 
-module "sles15sp4_terminal" {
+module "sles15sp7_buildhost" {
+  source             = "./modules/build_host"
+  base_configuration = module.base_core.configuration
+  name               = "sles15sp7-build"
+  image              = "sles15sp7o"
+  provider_settings = {
+    mac                = "aa:b2:93:01:02:87"
+    memory             = 2048
+    vcpu               = 2
+  }
+  use_os_released_updates = false
+  ssh_key_path            = "./salt/controller/id_ed25519.pub"
+
+}
+
+module "sles15sp6_terminal" {
   source             = "./modules/pxe_boot"
   base_configuration = module.base_core.configuration
-  name               = "sles15sp4-terminal"
-  image              = "sles15sp4o"
+  name               = "sles15sp6-terminal"
+  image              = "sles15sp6o"
   provider_settings = {
     memory             = 2048
     vcpu               = 2
@@ -1113,7 +991,22 @@ module "sles15sp4_terminal" {
     product            = "ProLiant DL360 Gen9"
   }
   private_ip         = 6
-  private_name       = "sle15sp4terminal"
+  private_name       = "sle15sp6terminal"
+}
+
+module "sles15sp7_terminal" {
+  source             = "./modules/pxe_boot"
+  base_configuration = module.base_core.configuration
+  name               = "sles15sp7-terminal"
+  image              = "sles15sp7o"
+  provider_settings = {
+    memory             = 2048
+    vcpu               = 2
+    manufacturer       = "HP"
+    product            = "ProLiant DL580 Gen9"
+  }
+  private_ip         = 7
+  private_name       = "sle15sp7terminal"
 }
 
 module "dhcp_dns" {
@@ -1123,7 +1016,8 @@ module "dhcp_dns" {
   image              = "opensuse155o"
   private_hosts = [
     module.proxy_containerized.configuration,
-    module.sles15sp4_terminal.configuration
+    module.sles15sp6_terminal.configuration,
+    module.sles15sp7_terminal.configuration
   ]
   hypervisor = {
     host        = "suma-11.mgr.suse.de"
@@ -1167,6 +1061,7 @@ module "controller" {
   git_password = var.GIT_PASSWORD
   git_repo     = var.CUCUMBER_GITREPO
   branch       = var.CUCUMBER_BRANCH
+  git_profiles_repo = "https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/temporary"
 
   server_configuration = module.server_containerized.configuration
 
@@ -1237,36 +1132,19 @@ module "controller" {
   salt_migration_minion_configuration = module.salt_migration_minion.configuration
 
   slemicro51_minion_configuration    = module.slemicro51_minion.configuration
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-//  slemicro51_sshminion_configuration = module.slemicro51_sshminion.configuration
-
   slemicro52_minion_configuration    = module.slemicro52_minion.configuration
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-//  slemicro52_sshminion_configuration = module.slemicro52_sshminion.configuration
-
   slemicro53_minion_configuration    = module.slemicro53_minion.configuration
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-//  slemicro53_sshminion_configuration = module.slemicro53_sshminion.configuration
-
   slemicro54_minion_configuration    = module.slemicro54_minion.configuration
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-//  slemicro54_sshminion_configuration = module.slemicro54_sshminion.configuration
-
   slemicro55_minion_configuration    = module.slemicro55_minion.configuration
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-//  slemicro55_sshminion_configuration = module.slemicro55_sshminion.configuration
 
   slmicro60_minion_configuration    = module.slmicro60_minion.configuration
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-//  slmicro60_sshminion_configuration = module.slmicro60_sshminion.configuration
-
   slmicro61_minion_configuration    = module.slmicro61_minion.configuration
-//  WORKAROUND until https://bugzilla.suse.com/show_bug.cgi?id=1208045 gets fixed
-//  slmicro61_sshminion_configuration = module.slmicro61_sshminion.configuration
 
-  sle15sp4_buildhost_configuration = module.sles15sp4_buildhost.configuration
+  sle15sp6_buildhost_configuration = module.sles15sp6_buildhost.configuration
+  sle15sp7_buildhost_configuration = module.sles15sp7_buildhost.configuration
 
-  sle15sp4_terminal_configuration = module.sles15sp4_terminal.configuration
+  sle15sp6_terminal_configuration = module.sles15sp6_terminal.configuration
+  sle15sp7_terminal_configuration = module.sles15sp7_terminal.configuration
 
   monitoringserver_configuration = module.monitoring_server.configuration
 }

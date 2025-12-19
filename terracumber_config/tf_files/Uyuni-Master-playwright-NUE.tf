@@ -1,7 +1,7 @@
 // Mandatory variables for terracumber
 variable "URL_PREFIX" {
   type = string
-  default = "https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-master-dev-acceptance-tests-NUE"
+  default = "https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-master-dev-acceptance-tests-playwright-NUE"
 }
 
 // Not really used as this is for --runall parameter, and we run cucumber step by step
@@ -12,22 +12,22 @@ variable "CUCUMBER_COMMAND" {
 
 variable "CUCUMBER_GITREPO" {
   type = string
-  default = "https://github.com/uyuni-project/uyuni.git"
+  default = "https://github.com/srbarrios/uyuni-cucumber-playwright.git"
 }
 
 variable "CUCUMBER_BRANCH" {
   type = string
-  default = "master"
+  default = "main"
 }
 
 variable "CUCUMBER_RESULTS" {
   type = string
-  default = "/root/spacewalk/testsuite"
+  default = "/root/spacewalk"
 }
 
 variable "MAIL_SUBJECT" {
   type = string
-  default = "Results Uyuni-Master NUE $status: $tests scenarios ($failures failed, $errors errors, $skipped skipped, $passed passed)"
+  default = "Results Uyuni-Master playwright $status: $tests scenarios ($failures failed, $errors errors, $skipped skipped, $passed passed)"
 }
 
 variable "MAIL_TEMPLATE" {
@@ -37,7 +37,7 @@ variable "MAIL_TEMPLATE" {
 
 variable "MAIL_SUBJECT_ENV_FAIL" {
   type = string
-  default = "Results Uyuni-Master NUE: Environment setup failed"
+  default = "Results Uyuni-Master playwright: Environment setup failed"
 }
 
 variable "MAIL_TEMPLATE_ENV_FAIL" {
@@ -52,7 +52,7 @@ variable "MAIL_FROM" {
 
 variable "MAIL_TO" {
   type = string
-  default = "galaxy-ci@suse.de"
+  default = "obarrios@suse.com"
 }
 
 // sumaform specific variables
@@ -79,11 +79,6 @@ variable "PROMETHEUS_PUSH_GATEWAY_URL" {
   default = null
 }
 
-variable "GEMINI_API_KEY" {
-  type = string
-  default = null
-}
-
 terraform {
   required_version = ">= 1.6.0"
   required_providers {
@@ -95,7 +90,7 @@ terraform {
 }
 
 provider "libvirt" {
-  uri = "qemu+tcp://suma-01.mgr.suse.de/system"
+  uri = "qemu+tcp://suma-12.mgr.suse.de/system"
 }
 
 module "cucumber_testsuite" {
@@ -112,10 +107,10 @@ module "cucumber_testsuite" {
   cc_username   = var.SCC_USER
   cc_password   = var.SCC_PASSWORD
 
-  images        = ["rocky8o", "opensuse155o", "opensuse156o", "leapmicro55o", "ubuntu2404o", "sles15sp4o", "tumbleweedo"]
+  images        = ["rocky8o", "opensuse155o", "opensuse156o", "leapmicro55o", "ubuntu2404o", "sles15sp7o", "tumbleweedo"]
 
   use_avahi     = false
-  name_prefix   = "uyuni-ci-master-"
+  name_prefix   = "uyuni-ci-master-playwright-"
   domain        = "mgr.suse.de"
   from_email    = "root@suse.de"
 
@@ -123,7 +118,7 @@ module "cucumber_testsuite" {
   auth_registry             = "registry.mgr.suse.de:5000/cucutest"
   auth_registry_username    = "cucutest"
   auth_registry_password    = "cucusecret"
-  git_profiles_repo         = "https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/internal_nue"
+  git_profiles_repo         = "https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/temporary"
 
   container_server          = true
   container_proxy           = true
@@ -136,16 +131,17 @@ module "cucumber_testsuite" {
   # when changing images, please also keep in mind to adjust the image matrix at the end of the README.
   host_settings = {
     controller = {
+      image = "ubuntu2404o"
       provider_settings = {
-        mac       = "aa:b2:93:01:00:d0"
-        memory    = 10240
+        mac       = "aa:b2:93:02:02:41"
+        memory    = 4096
         vcpu      = 4
         cpu_model = "host-passthrough"
       }
     }
     server_containerized = {
       provider_settings = {
-        mac = "aa:b2:93:01:00:d1"
+        mac = "aa:b2:93:02:02:42"
       }
       runtime               = "podman"
       container_repository  = "registry.opensuse.org/systemsmanagement/uyuni/master/containerfile"
@@ -159,7 +155,7 @@ module "cucumber_testsuite" {
     }
     proxy_containerized = {
       provider_settings = {
-        mac = "aa:b2:93:01:00:d2"
+        mac = "aa:b2:93:02:02:43"
       }
       runtime              = "podman"
       container_repository = "registry.opensuse.org/systemsmanagement/uyuni/master/containerfile"
@@ -168,19 +164,19 @@ module "cucumber_testsuite" {
     suse_minion = {
       image             = "tumbleweedo"
       provider_settings = {
-        mac = "aa:b2:93:01:00:d6"
+        mac = "aa:b2:93:02:02:44"
       }
     }
     suse_sshminion = {
       image             = "tumbleweedo"
       provider_settings = {
-        mac = "aa:b2:93:01:00:d8"
+        mac = "aa:b2:93:02:02:45"
       }
     }
     rhlike_minion = {
       image             = "rocky8o"
       provider_settings = {
-        mac    = "aa:b2:93:01:00:da"
+        mac    = "aa:b2:93:02:02:46"
         // Since start of May we have problems with the instance not booting after a restart if there is only a CPU and only 1024Mb for RAM
         // Also, openscap cannot run with less than 1.25 GB of RAM
         vcpu   = 2
@@ -190,25 +186,24 @@ module "cucumber_testsuite" {
     deblike_minion = {
       image             = "ubuntu2404o"
       provider_settings = {
-        mac = "aa:b2:93:01:00:db"
+        mac = "aa:b2:93:02:02:47"
       }
     }
     build_host = {
-      image             = "sles15sp4o"
+      image             = "sles15sp7o"
       provider_settings = {
-        mac    = "aa:b2:93:01:00:dd"
-        vcpu   = 2
+        mac    = "aa:b2:93:02:02:48"
         memory = 2048
       }
     }
     pxeboot_minion = {
-      image = "sles15sp4o"
+      image = "sles15sp7o"
     }
     dhcp_dns = {
       name       = "dhcp-dns"
       image      = "opensuse155o"
       hypervisor = {
-        host        = "suma-01.mgr.suse.de"
+        host        = "suma-12.mgr.suse.de"
         user        = "root"
         private_key = file("~/.ssh/id_ed25519")
       }
@@ -217,8 +212,8 @@ module "cucumber_testsuite" {
   provider_settings = {
     pool               = "ssd"
     network_name       = null
-    bridge             = "br0"
-    additional_network = "192.168.100.0/24"
+    bridge             = "br1"
+    additional_network = "192.168.117.0/24"
   }
 }
 
@@ -231,9 +226,7 @@ resource "null_resource" "configure_quality_intelligence" {
 
   provisioner "remote-exec" {
     inline = [ "echo export QUALITY_INTELLIGENCE=true >> ~/.bashrc",
-      "echo export PROMETHEUS_PUSH_GATEWAY_URL=${var.PROMETHEUS_PUSH_GATEWAY_URL} >> ~/.bashrc",
-      "echo export GEMINI_API_KEY=${var.GEMINI_API_KEY} >> ~/.bashrc",
-      "source ~/.bashrc"
+      "echo export PROMETHEUS_PUSH_GATEWAY_URL=${var.PROMETHEUS_PUSH_GATEWAY_URL} >> ~/.bashrc"
     ]
     connection {
       type     = "ssh"
