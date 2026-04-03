@@ -117,7 +117,7 @@ module "cucumber_testsuite" {
   cc_ptf_username = var.SCC_PTF_USER
   cc_ptf_password = var.SCC_PTF_PASSWORD
 
-  images = ["rocky8o", "opensuse156o", "ubuntu2404o", "sles15sp7o", "slmicro62o"]
+  images = ["rocky8o", "opensuse156o", "ubuntu2404o", "sles15sp7o", "slmicro61o"]
 
   use_avahi    = false
   name_prefix  = "mlm-test-hexagon-"
@@ -154,6 +154,7 @@ module "cucumber_testsuite" {
         vcpu = 8
         memory = 32768
       }
+      image = "slmicro61o"
       main_disk_size       = 500
       login_timeout        = 28800
       large_deployment     = true
